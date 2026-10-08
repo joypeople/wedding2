@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홍길동 & 김우주 결혼합니다</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet OpenStreetMap CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Google Fonts (Gowun Batang / Noto Serif KR) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Gowun Batang', 'Noto Serif KR', serif;
+            background-color: #f9f6f0;
+            color: #4a4a4a;
+        }
+        .flower-bg {
+            background-image: radial-gradient(#e5d9c5 0.75px, transparent 0.75px);
+            background-size: 16px 16px;
+        }
+        #map {
+            height: 280px;
+            width: 100%;
+            border-radius: 12px;
+            z-index: 1;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen p-0 sm:p-4 flower-bg">
+
+    <div class="w-full max-w-md bg-white shadow-2xl rounded-none sm:rounded-2xl overflow-hidden min-h-screen sm:min-h-0 my-0 sm:my-6 border border-amber-100/50">
+        
+        <!-- Header / Hero Section -->
+        <header class="text-center pt-10 pb-6 px-6 bg-amber-50/40">
+            <p class="text-xs tracking-widest text-amber-800/60 uppercase mb-2">WEDDING INVITATION</p>
+            <h1 class="text-2xl font-bold text-gray-800 tracking-wide mb-1">홍길동 <span class="text-amber-600 font-normal">&amp;</span> 김우주</h1>
+            <p class="text-sm text-gray-500 font-light mt-3">2027년 10월 9일 토요일 낮 12시</p>
+            <p class="text-xs text-gray-400 font-light">서울신라호텔</p>
+        </header>
+
+        <!-- Main Photo Showcase -->
+        <section class="px-4 py-2">
+            <div class="relative overflow-hidden rounded-xl shadow-md">
+                <img id="main-image" src="wedding5.jpg" alt="메인 결혼 사진" class="w-full h-[420px] object-cover object-top transition-all duration-500">
+                <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 via-transparent to-transparent p-4 text-white text-center">
+                    <p class="text-sm font-light tracking-wider">소중한 분들을 초대합니다</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Greeting Message Section -->
+        <section class="px-8 py-10 text-center border-b border-amber-100">
+            <div class="inline-block p-2 mb-4 rounded-full bg-amber-50">
+                <i class="fa-solid fa-heart text-amber-500 text-sm"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-800 mb-6 tracking-wide">초대의 글</h2>
+            <p class="text-sm text-gray-600 leading-relaxed font-light mb-4">
+                서로 다른 모습으로 살아온 두 사람이<br>
+                이제 사랑이라는 이름으로 하나가 되려 합니다.<br><br>
+                저희의 첫걸음을 축복해 주신다면<br>
+                더없는 기쁨과 큰 힘이 되겠습니다.<br><br>
+                따뜻한 사랑으로 채워가겠습니다.
+            </p>
+            <div class="mt-8 pt-6 border-t border-dashed border-amber-200 text-sm text-gray-700">
+                <div class="my-1"><span class="font-bold text-gray-800">홍길동</span></div>
+                <div class="my-1"><span class="font-bold text-gray-800">김우주</span></div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="px-6 py-10 border-b border-amber-100 bg-amber-50/20">
+            <h2 class="text-center text-xs tracking-widest text-amber-800 uppercase mb-2">GALLERY</h2>
+            <h3 class="text-center text-lg font-semibold text-gray-800 mb-6">웨딩 갤러리</h3>
+            
+            <div class="grid grid-cols-3 gap-2">
+                <img src="wedding1.jpg" onclick="changeMainImage('wedding1.jpg')" class="w-full h-28 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-sm border border-amber-100" alt="사진1">
+                <img src="wedding2.jpg" onclick="changeMainImage('wedding2.jpg')" class="w-full h-28 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-sm border border-amber-100" alt="사진2">
+                <img src="wedding3.jpg" onclick="changeMainImage('wedding3.jpg')" class="w-full h-28 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-sm border border-amber-100" alt="사진3">
+                <img src="wedding4.jpg" onclick="changeMainImage('wedding4.jpg')" class="w-full h-28 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-sm border border-amber-100" alt="사진4">
+                <img src="wedding5.jpg" onclick="changeMainImage('wedding5.jpg')" class="w-full h-28 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-sm border border-amber-100" alt="사진5">
+            </div>
+            <p class="text-center text-xs text-gray-400 mt-3">사진을 클릭하시면 상단 메인에서 크게 보실 수 있습니다.</p>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="px-6 py-10 border-b border-amber-100">
+            <h2 class="text-center text-xs tracking-widest text-amber-800 uppercase mb-2">CONTACT</h2>
+            <h3 class="text-center text-lg font-semibold text-gray-800 mb-6">연락처</h3>
+
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Groom Contact -->
+                <div class="bg-blue-50/50 p-4 rounded-xl text-center border border-blue-100">
+                    <p class="text-xs text-blue-600 font-semibold mb-1">신랑</p>
+                    <p class="font-bold text-gray-800 mb-2">홍길동</p>
+                    <a href="tel:000-0000-0000" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-full text-xs hover:bg-blue-700 transition">
+                        <i class="fa-solid fa-phone text-[10px]"></i> 전화하기
+                    </a>
+                </div>
+                <!-- Bride Contact -->
+                <div class="bg-rose-50/50 p-4 rounded-xl text-center border border-rose-100">
+                    <p class="text-xs text-rose-600 font-semibold mb-1">신부</p>
+                    <p class="font-bold text-gray-800 mb-2">김우주</p>
+                    <a href="tel:000-0000-0000" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-500 text-white rounded-full text-xs hover:bg-rose-600 transition">
+                        <i class="fa-solid fa-phone text-[10px]"></i> 전화하기
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location & Map Section -->
+        <section class="px-6 py-10 border-b border-amber-100">
+            <h2 class="text-center text-xs tracking-widest text-amber-800 uppercase mb-2">LOCATION</h2>
+            <h3 class="text-center text-lg font-semibold text-gray-800 mb-2">오시는 길</h3>
+            <p class="text-center text-sm font-bold text-gray-700 mb-1">서울신라호텔</p>
+            <p class="text-center text-xs text-gray-500 mb-6">서울특별시 중구 동호로 249</p>
+
+            <!-- Leaflet Interactive Free Map (Zoomable) -->
+            <div id="map" class="shadow-inner border border-gray-200 mb-4"></div>
+            
+            <p class="text-center text-xs text-amber-700 bg-amber-50 py-2 rounded-lg border border-amber-200">
+                <i class="fa-solid fa-magnifying-glass-plus mr-1"></i> 지도를 터치하여 자유롭게 확대/축소가 가능합니다.
+            </p>
+        </section>
+
+        <!-- Account / Gift Section -->
+        <section class="px-6 py-10">
+            <h2 class="text-center text-xs tracking-widest text-amber-800 uppercase mb-2">ACCOUNT</h2>
+            <h3 class="text-center text-lg font-semibold text-gray-800 mb-2">마음 전하실 곳</h3>
+            <p class="text-center text-xs text-gray-500 mb-6">축복의 마음을 담아 전해주시는 축의금은<br>소중히 사용하겠습니다.</p>
+
+            <div class="space-y-3">
+                <!-- Groom Account -->
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex justify-between items-center">
+                    <div>
+                        <span class="text-xs font-bold text-blue-600 block">신랑측 계좌</span>
+                        <span class="text-sm font-medium text-gray-800">홍길동 : </span>
+                        <span id="groom-account" class="text-sm font-semibold text-gray-900">12-345-678-9</span>
+                    </div>
+                    <button onclick="copyToClipboard('12-345-678-9', '신랑 계좌번호')" class="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition flex items-center gap-1">
+                        <i class="fa-regular fa-copy"></i> 복사
+                    </button>
+                </div>
+
+                <!-- Bride Account -->
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex justify-between items-center">
+                    <div>
+                        <span class="text-xs font-bold text-rose-600 block">신부측 계좌</span>
+                        <span class="text-sm font-medium text-gray-800">김우주 : </span>
+                        <span id="bride-account" class="text-sm font-semibold text-gray-900">12-345-678-90</span>
+                    </div>
+                    <button onclick="copyToClipboard('12-345-678-90', '신부 계좌번호')" class="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition flex items-center gap-1">
+                        <i class="fa-regular fa-copy"></i> 복사
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-amber-50/50 py-8 text-center text-xs text-gray-400 border-t border-amber-100">
+            <p>2027.10.09 홍길동 &amp; 김우주</p>
+            <p class="mt-1">Thank you for sharing our special day.</p>
+        </footer>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white px-5 py-2.5 rounded-full text-xs shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toast-message">복사되었습니다.</span>
+    </div>
+
+    <script>
+        // Gallery Main Image Change
+        function changeMainImage(src) {
+            const mainImg = document.getElementById('main-image');
+            mainImg.style.opacity = '0.4';
+            setTimeout(() => {
+                mainImg.src = src;
+                mainImg.style.opacity = '1';
+            }, 150);
+        }
+
+        // Copy Account Number to Clipboard
+        function copyToClipboard(text, targetName) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`${targetName}가 복사되었습니다.`);
+            }).catch(err => {
+                showToast('복사에 실패했습니다.');
+            });
+        }
+
+        // Show Toast Function
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = msg;
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+            }, 2500);
+        }
+
+        // Initialize Leaflet Map (Free OpenStreetMap with zoom controls)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seoul Shilla Hotel Coordinates (Latitude: 37.5559, Longitude: 127.0055)
+            const shillaLat = 37.5559;
+            const shillaLng = 127.0055;
+
+            // Initialize Map
+            const map = L.map('map', {
+                center: [shillaLat, shillaLng],
+                zoom: 16,
+                zoomControl: true, // Enable zoom in / zoom out controls
+                scrollWheelZoom: true
+            });
+
+            // OpenStreetMap Tile Layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            // Custom Hotel Marker Popup
+            const marker = L.marker([shillaLat, shillaLng]).addTo(map);
+            marker.bindPopup("<b>서울신라호텔</b><br>서울특별시 중구 동호로 249").openPopup();
+        });
+    </script>
+
+</body>
+</html>
